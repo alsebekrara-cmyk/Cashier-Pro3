@@ -59,6 +59,7 @@
       "preload.js",
       "splash.html",
       "index.html",
+      "yaqoub_logo.png",
       "firebase-config.js",
       "enhanced-modals.css",
       "reports-system.js",
@@ -77,7 +78,9 @@
       {
         "from": "database",
         "to": "database",
-        "filter": ["**/*"]
+        "filter": [
+          "**/*"
+        ]
       }
     ],
     "win": {
@@ -90,15 +93,15 @@
           ]
         }
       ],
-      "icon": "build/icon.ico",
-      "requestedExecutionLevel": "requireAdministrator"
+      "icon": "build/Gemini_Generated_Image_w319kww319kww319.png",
+      "requestedExecutionLevel": "asInvoker"
     },
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
-      "installerIcon": "build/icon.ico",
-      "uninstallerIcon": "build/icon.ico",
-      "installerHeaderIcon": "build/icon.ico",
+      "installerIcon": "build/Gemini_Generated_Image_w319kww319kww319.png",
+      "uninstallerIcon": "build/Gemini_Generated_Image_w319kww319kww319.png",
+      "installerHeaderIcon": "build/Gemini_Generated_Image_w319kww319kww319.png",
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
       "shortcutName": "نظام نقاط البيع المتقدم",
@@ -112,7 +115,7 @@
       "license": "LICENSE.txt",
       "warningsAsErrors": false,
       "allowElevation": true,
-      "perMachine": true
+      "perMachine": false
     },
     "portable": {
       "artifactName": "POS-System-Pro-Portable-${version}.${ext}"

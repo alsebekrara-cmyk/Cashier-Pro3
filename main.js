@@ -358,7 +358,7 @@ function createMainWindow() {
         center: true,
         show: false,
         backgroundColor: '#0f172a',
-            icon: path.join(__dirname, 'yaqoub_logo.png'),
+            icon: path.join(__dirname, 'build', 'Gemini_Generated_Image_w319kww319kww319.png'),
         webPreferences: {
             nodeIntegration: false,
             contextIsolation: true,
@@ -409,10 +409,13 @@ function createMainWindow() {
 // معالجات أزرار التحكم في النافذة
 function setupWindowControls() {
     ipcMain.on('window-minimize', () => {
-        if (mainWindow) mainWindow.minimize();
+        if (mainWindow) {
+            mainWindow.minimize();
+        }
     });
-    
-    ipcMain.on('window-maximize', () => {
+
+    // قناة جديدة لتبديل حالة التكبير فقط
+    ipcMain.on('window-toggle-maximize', () => {
         if (mainWindow) {
             if (mainWindow.isMaximized()) {
                 mainWindow.unmaximize();
@@ -421,9 +424,11 @@ function setupWindowControls() {
             }
         }
     });
-    
+
     ipcMain.on('window-close', () => {
-        if (mainWindow) mainWindow.close();
+        if (mainWindow) {
+            mainWindow.close();
+        }
     });
 }
 
