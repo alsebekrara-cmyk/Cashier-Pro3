@@ -110,10 +110,12 @@ async function saveExpense() {
     
     // التحقق من البيانات
     if (!type || !amount || !date) {
+        showNotification('يرجى ملء جميع الحقول المطلوبة', 'error');
         return;
     }
     
     if (amount <= 0) {
+        showNotification('المبلغ يجب أن يكون أكبر من صفر', 'error');
         return;
     }
     
@@ -149,8 +151,10 @@ async function saveExpense() {
         // إغلاق النافذة
         closeAddExpenseModal();
         
+        showNotification('تم إضافة المصروف بنجاح', 'success');
     } catch (error) {
         console.error('خطأ في حفظ المصروف:', error);
+        showNotification('حدث خطأ أثناء حفظ المصروف', 'error');
     }
 }
 
@@ -175,8 +179,10 @@ async function deleteExpense(expenseId) {
         expensesData = expensesData.filter(e => e.id !== expenseId);
         loadExpenses();
         updateExpensesStats();
+        showNotification('تم حذف المصروف بنجاح', 'success');
     } catch (error) {
         console.error('خطأ في حذف المصروف:', error);
+        showNotification('حدث خطأ أثناء حذف المصروف', 'error');
     }
 }
 
@@ -236,6 +242,7 @@ async function loadExpenses() {
         });
     } catch (error) {
         console.error('خطأ في تحميل المصاريف:', error);
+        showNotification('حدث خطأ أثناء تحميل المصاريف', 'error');
     }
 }
 
@@ -302,6 +309,7 @@ function removePurchaseItem(itemIndex) {
     const items = container.querySelectorAll('.purchase-item');
     
     if (items.length <= 1) {
+        showNotification('يجب أن تحتوي الفاتورة على منتج واحد على الأقل', 'warning');
         return;
     }
     
@@ -338,6 +346,7 @@ async function savePurchase() {
     
     // التحقق من البيانات
     if (!supplierName || !date) {
+        showNotification('يرجى ملء المعلومات الأساسية', 'error');
         return;
     }
     
@@ -366,6 +375,7 @@ async function savePurchase() {
     });
     
     if (hasError || items.length === 0) {
+        showNotification('يرجى ملء جميع بيانات المنتجات', 'error');
         return;
     }
     
@@ -410,8 +420,10 @@ async function savePurchase() {
         // إغلاق النافذة
         closeAddPurchaseModal();
         
+        showNotification('تم إضافة فاتورة المشتريات بنجاح ✅ وتم إضافة المنتجات إلى المخزون', 'success');
     } catch (error) {
         console.error('خطأ في حفظ فاتورة المشتريات:', error);
+        showNotification('حدث خطأ أثناء حفظ الفاتورة', 'error');
     }
 }
 
@@ -535,8 +547,10 @@ async function deletePurchase(purchaseId) {
         purchasesData = purchasesData.filter(p => p.id !== purchaseId);
         loadPurchases();
         updateExpensesStats();
+        showNotification('تم حذف فاتورة المشتريات بنجاح', 'success');
     } catch (error) {
         console.error('خطأ في حذف فاتورة المشتريات:', error);
+        showNotification('حدث خطأ أثناء حذف الفاتورة', 'error');
     }
 }
 
@@ -661,6 +675,7 @@ async function loadPurchases() {
         });
     } catch (error) {
         console.error('خطأ في تحميل فواتير المشتريات:', error);
+        showNotification('حدث خطأ أثناء تحميل الفواتير', 'error');
     }
 }
 
@@ -741,6 +756,7 @@ async function updateExpensesReports() {
             const customFrom = document.getElementById('reportsDateFrom').value;
             const customTo = document.getElementById('reportsDateTo').value;
             if (!customFrom || !customTo) {
+                showNotification('يرجى تحديد الفترة الزمنية', 'warning');
                 return;
             }
             dateFrom = new Date(customFrom);
@@ -809,6 +825,7 @@ async function updateExpensesReports() {
         updatePurchasedProductsTable(filteredPurchases);
     } catch (error) {
         console.error('خطأ في تحديث تقارير المصاريف:', error);
+        showNotification('حدث خطأ أثناء تحديث التقارير', 'error');
     }
 }
 
@@ -1042,6 +1059,8 @@ async function saveManualDebt() {
     
     // التحقق من البيانات
     if (!customerName || !customerPhone || !date || !totalAmount || !months) {
+        if (typeof showNotification === 'function') {
+            showNotification('يرجى ملء جميع الحقول المطلوبة', 'error');
         } else {
             alert('يرجى ملء جميع الحقول المطلوبة');
         }
@@ -1049,6 +1068,8 @@ async function saveManualDebt() {
     }
     
     if (totalAmount <= 0 || months <= 0) {
+        if (typeof showNotification === 'function') {
+            showNotification('المبلغ وعدد الأشهر يجب أن يكون أكبر من صفر', 'error');
         } else {
             alert('المبلغ وعدد الأشهر يجب أن يكون أكبر من صفر');
         }
@@ -1056,6 +1077,8 @@ async function saveManualDebt() {
     }
     
     if (downPayment >= totalAmount) {
+        if (typeof showNotification === 'function') {
+            showNotification('الدفعة المقدمة لا يمكن أن تكون أكبر من أو تساوي المبلغ الإجمالي', 'error');
         } else {
             alert('الدفعة المقدمة لا يمكن أن تكون أكبر من أو تساوي المبلغ الإجمالي');
         }
@@ -1169,6 +1192,8 @@ async function saveManualDebt() {
         // إغلاق النافذة
         closeAddManualDebtModal();
         
+        if (typeof showNotification === 'function') {
+            showNotification('تم إضافة الدين بنجاح ✅', 'success');
         } else {
             alert('تم إضافة الدين بنجاح ✅');
         }
@@ -1177,6 +1202,8 @@ async function saveManualDebt() {
         
     } catch (error) {
         console.error('❌ خطأ في حفظ الدين:', error);
+        if (typeof showNotification === 'function') {
+            showNotification('حدث خطأ أثناء حفظ الدين: ' + error.message, 'error');
         } else {
             alert('حدث خطأ أثناء حفظ الدين: ' + error.message);
         }
@@ -1191,6 +1218,7 @@ async function saveManualDebt() {
 function viewExpenseDetails(expenseId) {
     const expense = expensesData.find(e => e.id === expenseId);
     if (!expense) {
+        showNotification('لم يتم العثور على المصروف', 'error');
         return;
     }
     
@@ -1297,6 +1325,7 @@ function closeExpenseDetailsModal() {
 function editExpense(expenseId) {
     const expense = expensesData.find(e => e.id === expenseId);
     if (!expense) {
+        showNotification('لم يتم العثور على المصروف', 'error');
         return;
     }
     
@@ -1330,16 +1359,19 @@ async function updateExpense(expenseId) {
     
     // التحقق من البيانات
     if (!type || !amount || !date) {
+        showNotification('يرجى ملء جميع الحقول المطلوبة', 'error');
         return;
     }
     
     if (amount <= 0) {
+        showNotification('المبلغ يجب أن يكون أكبر من صفر', 'error');
         return;
     }
     
     // العثور على المصروف
     const expenseIndex = expensesData.findIndex(e => e.id === expenseId);
     if (expenseIndex === -1) {
+        showNotification('لم يتم العثور على المصروف', 'error');
         return;
     }
     
@@ -1381,8 +1413,10 @@ async function updateExpense(expenseId) {
         // إغلاق النافذة
         closeAddExpenseModal();
         
+        showNotification('تم تحديث المصروف بنجاح', 'success');
     } catch (error) {
         console.error('خطأ في تحديث المصروف:', error);
+        showNotification('حدث خطأ أثناء تحديث المصروف', 'error');
     }
 }
 
